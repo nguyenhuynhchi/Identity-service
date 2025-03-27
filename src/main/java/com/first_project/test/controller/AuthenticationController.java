@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
   AuthenticationService authenticationService;
 
+  // log-in và generate token
   @PostMapping("/token")
   ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
     var result = authenticationService.authenticate(request);
