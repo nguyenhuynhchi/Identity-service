@@ -7,7 +7,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // Dể dàng tạo các Object
-@FieldDefaults(level = AccessLevel.PRIVATE) // Mặc định quyền cho các trường(Field) là private
-public class IntrospectResponse {
-  boolean valid;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PermissonResponse {
+
+  String name;
+  String description;
 }

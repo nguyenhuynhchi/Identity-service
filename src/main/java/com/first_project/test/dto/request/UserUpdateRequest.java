@@ -3,11 +3,8 @@ package com.first_project.test.dto.request;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
@@ -28,6 +25,8 @@ public class UserUpdateRequest {
   @Pattern(regexp = "^[a-zA-Z]*$", message = "NAME_INVALID")
   String lastName;
   LocalDate dob;
+
+  List<String> roles;
 
 //  public String getUsername() {
 //    return username;

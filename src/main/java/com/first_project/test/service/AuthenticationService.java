@@ -8,26 +8,32 @@ import com.first_project.test.entity.User;
 import com.first_project.test.exception.AppException;
 import com.first_project.test.exception.ErrorCode;
 import com.first_project.test.repository.UserRepository;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.Payload;
+
+//import com.nimbusds.jose.JOSEException;
+//import com.nimbusds.jose.JWSAlgorithm;
+//import com.nimbusds.jose.JWSHeader;
+//import com.nimbusds.jose.JWSObject;
+//import com.nimbusds.jose.JWSVerifier;
+//import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.*;
+
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.StringJoiner;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -111,10 +117,17 @@ public class AuthenticationService {
 
   private String buildScope(User user){
     StringJoiner stringJoiner = new StringJoiner("");
-    if(!CollectionUtils.isEmpty(user.getRoles())){
-//      user.getRoles().forEach(s->stringJoiner.add(s));  được thay thế bằng hàm lamda ở dưới
-      user.getRoles().forEach(stringJoiner::add);
-    }
+
+    // GỐC
+    if(!CollectionUtils.isEmpty(user.getRoles()))
+      user.getRoles().forEach(role -> {
+        stringJoiner.add("ROLE_"+role.getName());
+        if (!CollectionUtils.isEmpty(role.getPermissions()))
+          role.getPermissions()
+              .forEach(permission ->
+                  stringJoiner.add(permission.getName()));
+          });
+
     return stringJoiner.toString();
   }
 }

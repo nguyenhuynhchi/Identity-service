@@ -7,8 +7,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder // Dể dàng tạo các Object
-@FieldDefaults(level = AccessLevel.PRIVATE) // Mặc định quyền cho các trường(Field) là private
-public class AuthenticationRequest {
-  String username;
-  String password;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PermissonRequest {
+  String name;
+  String description;
 }

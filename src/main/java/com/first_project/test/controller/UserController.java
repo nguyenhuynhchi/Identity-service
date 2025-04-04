@@ -4,7 +4,6 @@ import com.first_project.test.dto.request.ApiResponse;
 import com.first_project.test.dto.request.UserCreationRequest;
 import com.first_project.test.dto.request.UserUpdateRequest;
 import com.first_project.test.dto.response.UserResponse;
-import com.first_project.test.entity.User;
 import com.first_project.test.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -36,7 +35,7 @@ public class UserController {
   ApiResponse<List<UserResponse>> getUsers(){
     var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    log.info("usename: {}", authentication.getName());
+    log.info("Usename: {}", authentication.getName());
     authentication.getAuthorities()
         .forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
@@ -60,7 +59,7 @@ public class UserController {
         .build();
   }
 
-  @GetMapping("/getMyInfo")
+  @GetMapping("/myInfo")
   ApiResponse<UserResponse> getMyInfo() {
     return ApiResponse.<UserResponse>builder()
         .result(userService.getMyInfo())

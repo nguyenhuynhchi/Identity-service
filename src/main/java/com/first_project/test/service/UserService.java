@@ -3,26 +3,32 @@ package com.first_project.test.service;
 import com.first_project.test.dto.request.UserCreationRequest;
 import com.first_project.test.dto.request.UserUpdateRequest;
 import com.first_project.test.dto.response.UserResponse;
+
 import com.first_project.test.entity.User;
 import com.first_project.test.enums.Role;
+
 import com.first_project.test.exception.AppException;
 import com.first_project.test.exception.ErrorCode;
+
 import com.first_project.test.mapper.UserMapper;
+
 import com.first_project.test.repository.UserRepository;
+import com.first_project.test.repository.RoleRepository;
+
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -48,9 +54,16 @@ public class UserService {
 //    PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
+    // GỐC
     HashSet<String> roles = new HashSet<>();
     roles.add(Role.USER.name());
-    user.setRoles(roles);
+
+    // CHAT GPT
+//    HashSet<Role> roles = new HashSet<>();
+//    roles.add(new Role("USER"));
+
+//    user.setRoles(roles);
+
     return userMapper.toUserResponse(userRepository.save(user));
   }
 
@@ -70,7 +83,7 @@ public class UserService {
   @PostAuthorize("returnObject.username == authentication.name")
   public UserResponse getUserID(String userID) {
     log.info("In method get user by ID");
-    return userMapper.toUserResponse(userRepository.findById(userID)
+    return userMapper.toUserResponse(userRepository.findById(userID) // kiểm tra User có tồn tại không
         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
   }
 
@@ -110,10 +123,8 @@ public class UserService {
   }
 
   public void deleteUserID(String userID) {
-    if (!userRepository.existsById(
-        userID)) {   // kiểm tra ID có tồn tại không (tồn tại: false; k tồn tại: true)
-      throw new AppException(ErrorCode.USER_NOT_EXISTED);
-    }
+    userRepository.findById(userID)
+        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     userRepository.deleteById(userID);
   }
 
