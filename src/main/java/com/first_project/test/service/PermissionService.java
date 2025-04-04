@@ -1,9 +1,9 @@
 package com.first_project.test.service;
 
-import com.first_project.test.dto.request.PermissonRequest;
-import com.first_project.test.dto.response.PermissonResponse;
+import com.first_project.test.dto.request.PermissionRequest;
+import com.first_project.test.dto.response.PermissionResponse;
 import com.first_project.test.entity.Permission;
-import com.first_project.test.mapper.PermissonMapper;
+import com.first_project.test.mapper.PermissionMapper;
 import com.first_project.test.repository.PermissionRepository;
 
 import java.util.List;
@@ -22,20 +22,20 @@ import org.springframework.stereotype.Service;
 public class PermissionService {
 
   PermissionRepository permissionRepository;
-  PermissonMapper permissonMapper;
+  PermissionMapper PermissionMapper;
 
-  public PermissonResponse create(PermissonRequest request) {
-    Permission permission = permissonMapper.toPermisson(request);
+  public PermissionResponse create(PermissionRequest request) {
+    Permission permission = PermissionMapper.toPermission(request);
     permission = permissionRepository.save(permission);
-    return permissonMapper.toPermissonResponse(permission);
+    return PermissionMapper.toPermissionResponse(permission);
   }
 
-  public List<PermissonResponse> getAll(){
-    var permissons = permissionRepository.findAll();
-    return permissons.stream().map(permissonMapper::toPermissonResponse).toList();
+  public List<PermissionResponse> getAll(){
+    var permissions = permissionRepository.findAll();
+    return permissions.stream().map(PermissionMapper::toPermissionResponse).toList();
   }
 
-  public void delete(String permisson){
-    permissionRepository.deleteById(permisson);
+  public void delete(String Permission){
+    permissionRepository.deleteById(Permission);
   }
 }

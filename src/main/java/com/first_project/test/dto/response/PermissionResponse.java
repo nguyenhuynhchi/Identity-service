@@ -1,4 +1,4 @@
-package com.first_project.test.dto.request;
+package com.first_project.test.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder // Dể dàng tạo các Object
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissonRequest {
+public class PermissionResponse {
+
   String name;
   String description;
 }

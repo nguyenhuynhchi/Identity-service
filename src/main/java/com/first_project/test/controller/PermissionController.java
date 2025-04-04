@@ -2,8 +2,8 @@ package com.first_project.test.controller;
 
 
 import com.first_project.test.dto.request.ApiResponse;
-import com.first_project.test.dto.request.PermissonRequest;
-import com.first_project.test.dto.response.PermissonResponse;
+import com.first_project.test.dto.request.PermissionRequest;
+import com.first_project.test.dto.response.PermissionResponse;
 import com.first_project.test.service.PermissionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,30 +13,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/permissons")
+@RequestMapping("/permissions")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class PermissonController {
+public class PermissionController {
   PermissionService permissionService;
 
   @PostMapping
-  ApiResponse<PermissonResponse> create(@RequestBody PermissonRequest request){
-    return ApiResponse.<PermissonResponse>builder()
+  ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request){
+    return ApiResponse.<PermissionResponse>builder()
         .result(permissionService.create(request))
         .build();
   }
 
   @GetMapping
-  ApiResponse<List<PermissonResponse>> getAll(){
-    return ApiResponse.<List<PermissonResponse>>builder()
+  ApiResponse<List<PermissionResponse>> getAll(){
+    return ApiResponse.<List<PermissionResponse>>builder()
         .result(permissionService.getAll())
         .build();
   }
 
-  @DeleteMapping("/{permisson}")
-  ApiResponse<Void> delete(@PathVariable String permisson){
-    permissionService.delete(permisson);
+  @DeleteMapping("/{permission}")
+  ApiResponse<Void> delete(@PathVariable String permission){
+    permissionService.delete(permission);
     return ApiResponse.<Void>builder().build();
   }
 

@@ -12,5 +12,5 @@ import java.util.Set;
 public class RoleRequest {
   String name;
   String description;
-  Set<String> permissons;
+  Set<String> permissions;
 }
