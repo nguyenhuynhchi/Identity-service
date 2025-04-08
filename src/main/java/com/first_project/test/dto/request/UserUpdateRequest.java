@@ -1,5 +1,6 @@
 package com.first_project.test.dto.request;
 
+import com.first_project.test.validator.DobConstraint;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class UserUpdateRequest {
   String firstName;
   @Pattern(regexp = "^[a-zA-Z]*$", message = "NAME_INVALID")
   String lastName;
+  @DobConstraint(min = 18, message = "INVALID_DOB")
   LocalDate dob;
 
   List<String> roles;

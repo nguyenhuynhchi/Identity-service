@@ -1,9 +1,11 @@
 package com.first_project.test.dto.request;
 
+import com.first_project.test.validator.DobConstraint;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,8 +25,11 @@ public class UserCreationRequest {
   String firstName;
   @Pattern(regexp = "^[a-zA-Z]*$", message = "NAME_INVALID")
   String lastName;
+
+  @DobConstraint(min = 18, message = "INVALID_DOB")
   LocalDate dob;
 
+  List<String> roles;
   // Annotation Data tự động generate các method getter setter nên không cần viết các method
 
 //  public String getUsername() {

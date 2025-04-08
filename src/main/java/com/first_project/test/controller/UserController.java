@@ -44,7 +44,7 @@ public class UserController {
         .build();
   }
 
-  @GetMapping("/searchByID/{userID}")
+  @GetMapping("/getByID/{userID}")
   ApiResponse<UserResponse> getUserID(@PathVariable("userID") String userID) {
     return ApiResponse.<UserResponse>builder()
         .result(userService.getUserID(userID))
@@ -52,7 +52,7 @@ public class UserController {
   }
 
   // Chỉ để test không nên cho phép search username như vậy vì có thể lộ thông tin người dùng
-  @GetMapping("/searchByName/{username}")
+  @GetMapping("/getByName/{username}")
   ApiResponse<UserResponse> getUsername(@PathVariable("username") String userName) {
     return ApiResponse.<UserResponse>builder()
         .result(userService.getUserName(userName))

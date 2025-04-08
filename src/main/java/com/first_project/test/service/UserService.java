@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   UserRepository userRepository;
+  RoleRepository roleRepository;
   UserMapper userMapper;
   PasswordEncoder passwordEncoder;
 
@@ -55,12 +56,11 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
     // GỐC
-    HashSet<String> roles = new HashSet<>();
-    roles.add(Role.USER.name());
+//    HashSet<String> roles = new HashSet<>();
+//    roles.add(Role.USER.name());
 
-    // CHAT GPT
-//    HashSet<Role> roles = new HashSet<>();
-//    roles.add(new Role("USER"));
+    var roles = roleRepository.findAllById(request.getRoles());
+    user.setRoles(new HashSet<>(roles));
 
 //    user.setRoles(roles);
 
@@ -73,6 +73,7 @@ public class UserService {
 
   // Pre kiểm tra ROLE trước khi thực hiện method
   @PreAuthorize("hasRole('ADMIN')")
+//  @PreAuthorize("hasAuthority('APPROVE_POST')")
   public List<UserResponse> getUsers() {
     log.info("In method get users");
     return userRepository.findAll().stream()
@@ -105,19 +106,11 @@ public class UserService {
     User user = userRepository.findById(userID)
         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-    // Nếu mật khẩu mới được cung cấp, mã hóa mật khẩu
-    if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-//      PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
-      request.setPassword(passwordEncoder.encode(request.getPassword()));
-    }
-
     userMapper.updateUser(user, request);
-    // Sử dụng Mapper nên không cần
-//        user.setUsername(request.getUsername());
-//        user.setPassword(request.getPassword());
-//        user.setFirstName(request.getFirstName());
-//        user.setLastName(request.getLastName());
-//        user.setDob(request.getDob());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+    var roles = roleRepository.findAllById(request.getRoles());
+    user.setRoles(new HashSet<>(roles));
 
     return userMapper.toUserResponse(userRepository.save(user));
   }

@@ -19,5 +19,5 @@ public class UserResponse {
   String lastName;
   LocalDate dob;
 //  Set<String> roles;  // GỐC
-  Set<RoleResponse> roles; // TEST
+  Set<RoleResponse> roles;
 }
