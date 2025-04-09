@@ -71,7 +71,7 @@ public class UserService {
 //    return userRepository.findAll();
 //  }
 
-  // Pre kiểm tra ROLE trước khi thực hiện method
+  // Pre kiểm tra ROLE trước khi thực hiện method lấy tất cả user
   @PreAuthorize("hasRole('ADMIN')")
 //  @PreAuthorize("hasAuthority('APPROVE_POST')")
   public List<UserResponse> getUsers() {
@@ -80,7 +80,7 @@ public class UserService {
         .map(userMapper::toUserResponse).toList();
   }
 
-  // Post Thực hiện method xong mới kiểm tra ROLE
+  // Post Thực hiện method để lấy được thông tin của user rồi kiểm tra trong thông tin token đó có đúng là của user đó không
   @PostAuthorize("returnObject.username == authentication.name")
   public UserResponse getUserID(String userID) {
     log.info("In method get user by ID");
@@ -88,7 +88,8 @@ public class UserService {
         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
   }
 
-  // Bị lỗi không xác định khi get API với username
+  // GetUser bằng username (Không nên, chỉ để test)
+  @PostAuthorize("returnObject.username == authentication.name")
   public UserResponse getUserName(String username) {
     return userMapper.toUserResponse(userRepository.findByUsername(username)
         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));

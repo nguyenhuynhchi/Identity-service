@@ -3,6 +3,8 @@ package com.first_project.test.controller;
 import com.first_project.test.dto.request.ApiResponse;
 import com.first_project.test.dto.request.AuthenticationRequest;
 import com.first_project.test.dto.request.IntrospectRequest;
+import com.first_project.test.dto.request.LogoutRequest;
+import com.first_project.test.dto.request.RefreshRequest;
 import com.first_project.test.dto.response.AuthenticationResponse;
 import com.first_project.test.dto.response.IntrospectResponse;
 import com.first_project.test.service.AuthenticationService;
@@ -32,6 +34,7 @@ public class AuthenticationController {
         .result(result).build();
   }
 
+  // Kiểm tra token
   @PostMapping("/introspect")
   ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
       throws ParseException, JOSEException {
@@ -39,5 +42,22 @@ public class AuthenticationController {
     return ApiResponse.<IntrospectResponse>builder()
         .result(result)
         .build();
+  }
+
+  // log-in và generate token
+  @PostMapping("/refresh")
+  ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+      throws ParseException, JOSEException {
+    var result = authenticationService.refreshToken(request);
+
+    return ApiResponse.<AuthenticationResponse>builder()
+        .result(result).build();
+  }
+
+  @PostMapping("/logout")
+  ApiResponse<Void> logout(@RequestBody LogoutRequest request)
+      throws ParseException, JOSEException {
+    authenticationService.logout(request);
+    return ApiResponse.<Void>builder().build();
   }
 }
