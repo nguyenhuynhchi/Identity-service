@@ -42,10 +42,13 @@ public class UserService {
   PasswordEncoder passwordEncoder;
 
   public UserResponse createUser(UserCreationRequest request) {
+    log.info("Service: create user");
+
     if (userRepository.existsByUsername(request.getUsername())) {
       throw new AppException(ErrorCode.USER_EXISTED);
     }
     User user = userMapper.toUser(request); // userMapper sẽ tự set các field
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
     // Sử dụng Mapper nên không cần
 //        user.setUsername(request.getUsername());
 //        user.setPassword(request.getPassword());
@@ -53,16 +56,14 @@ public class UserService {
 //        user.setLastName(request.getLastName());
 //        user.setDob(request.getDob());
 //    PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-    // GỐC
-//    HashSet<String> roles = new HashSet<>();
-//    roles.add(Role.USER.name());
-
+    // GPT
     var roles = roleRepository.findAllById(request.getRoles());
     user.setRoles(new HashSet<>(roles));
 
-//    user.setRoles(roles);
+    // Bị lỗi
+//    HashSet<String> roles = new HashSet<>();
+//    roles.add(Role.USER.name());
 
     return userMapper.toUserResponse(userRepository.save(user));
   }

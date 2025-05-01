@@ -157,7 +157,7 @@ public class AuthenticationService {
 
     Date expiryTime = (isRefresh)
         ? new Date(signedJWT.getJWTClaimsSet().getIssueTime()
-        .toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+        .toInstant().plus(REFRESHABLE_DURATION, ChronoUnit.DAYS).toEpochMilli())
         : signedJWT.getJWTClaimsSet().getExpirationTime();
 
     var verified = signedJWT.verify(verifier);
@@ -183,7 +183,7 @@ public class AuthenticationService {
         .issuer("huynhchi.com") // Tên miền
         .issueTime(new Date())
         .expirationTime(new Date(
-            Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()
+            Instant.now().plus(VALID_DURATION, ChronoUnit.HOURS).toEpochMilli()
         )) // Token hết hạn sau 1 giờ
         .jwtID(UUID.randomUUID().toString())
         .claim("scope", buildScope(user))
